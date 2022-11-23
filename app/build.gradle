@@ -1,0 +1,42 @@
+plugins {
+    id 'com.android.application'
+}
+
+def config = rootProject.ext
+
+android {
+    compileSdk config.android.compileSdkVersion
+
+    defaultConfig {
+        applicationId config.applicationId.app
+        minSdk config.android.minSdkVersion
+        targetSdk config.android.targetSdkVersion
+        versionCode config.android.versionCode
+        versionName config.android.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation project(':modulesBase:libBase')
+    if(!config.isDebug) {
+        implementation project(':modulesCore:main')
+        implementation project(':modulesCore:login')
+    }
+
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
